@@ -13,14 +13,20 @@ public class Main {
         //print user input
 
         System.out.println("Guten Tag - Wilkommen im Taschenrechner. Folgende Rechenarten stehen zur Verfügung [add], [sub], [mul], [div]");
-        System.out.println("Geben Sie Zahl1 an: ");
-        String zahl1text = in.nextLine();
-        System.out.println("Geben Sie nun eine Rechenart (+,-,*,/) an)");
-        String rechenarttext = in.nextLine();
-        System.out.println("Geben Sie Zahl2 an: ");
-        String zahl2text = in.nextLine();
+        System.out.println("Geben Sie eine Aufgabe an: ");
+        String aufgabe = in.nextLine();
+        String[] zeichen = aufgabe.split(" ");
+        String zahl1text = zeichen[0];
+        String rechenarttext = zeichen[1];
+        String zahl2text = zeichen[2];
+
         float zahl1 = Float.parseFloat(zahl1text);
         float zahl2 = Float.parseFloat(zahl2text);
+
+
+        System.out.println("Ihr Ergebnis ist:");
+
+
         if (Objects.equals(rechenarttext, "+")){
             System.out.println(zahl1 +  " + " +zahl2 +" = " +add(zahl1,zahl2));
         }
