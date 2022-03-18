@@ -16,31 +16,18 @@ public class Main {
         System.out.println("Geben Sie eine Aufgabe an: ");
         String aufgabe = in.nextLine();
         String[] zeichen = aufgabe.split(" ");
-        String zahl1text = zeichen[0];
-        String rechenarttext = zeichen[1];
-        String zahl2text = zeichen[2];
-
-        float zahl1 = Float.parseFloat(zahl1text);
-        float zahl2 = Float.parseFloat(zahl2text);
-
-
-        System.out.println("Ihr Ergebnis ist:");
-
-
-        if (Objects.equals(rechenarttext, "+")){
-            System.out.println(zahl1 +  " + " +zahl2 +" = " +add(zahl1,zahl2));
-        }
-        if (Objects.equals(rechenarttext, "-")){
-            System.out.println(zahl1 +  " - " +zahl2 +" = " +sub(zahl1,zahl2));
-        }
-        if (Objects.equals(rechenarttext, "*")){
-            System.out.println(zahl1 +  " * " +zahl2 +" = " +mul(zahl1,zahl2));
-        }
-        if (Objects.equals(rechenarttext, "/")){
-            System.out.println(zahl1 +  " / " +zahl2 +" = " +div(zahl1,zahl2));
+        for (int i = 1; i < zeichen.length + 1 ; i = i + 1) {
+            if (i % 2 == 0) {
+                // operanten
+                System.out.println("operant:"+zeichen[i - 1]);
+            } else {
+                // zahl
+                System.out.println("zahl:"+zeichen[i - 1]);
+            }
         }
 
-}
+
+        }
 
 
 
@@ -64,5 +51,6 @@ public class Main {
 
         return zahl1 / zahl2;
     }
+
 
 }
