@@ -34,4 +34,9 @@ public class MainTest {
         float ergebnis = Main.div(5,0);
 
     }
+    @Test
+    public void berechnePunktVorStrich_test() {
+        String ergebnis = Main.berechnePunktVorStrich("5 + 2 * 3");
+        assertEquals("5 + 6",ergebnis);
+    }
 }
