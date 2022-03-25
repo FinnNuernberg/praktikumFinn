@@ -15,15 +15,18 @@ public class Main {
         if (args.length > 0) {
             for (int i = 0; i < args.length; i = i + 1) {
                 aufgabe = args[i];
-
                 berechneUndZeigeErgebnis(aufgabe);
             }
         } else {
             System.out.println("Guten Tag - Wilkommen im Taschenrechner. Folgende Rechenarten stehen zur Verfügung [add], [sub], [mul], [div]");
-            System.out.println("Geben Sie eine Aufgabe an: ");
-            aufgabe = in.nextLine(); //Aufgabe des Nutzers in der Konsole
+            do {
+                System.out.println("Geben Sie eine Aufgabe an: ");
+                aufgabe = in.nextLine(); //Aufgabe des Nutzers in der Konsole
+                if(!aufgabe.equals("")) {
+                    berechneUndZeigeErgebnis(aufgabe);
+                }
+            } while (!aufgabe.equals(""));
 
-            berechneUndZeigeErgebnis(aufgabe);
         }
 
     }
@@ -34,37 +37,55 @@ public class Main {
      * @param aufgabe die aufgabe die umgewandelt werden soll
      * @return die umgewandelte aufgabe
      */
+
     public static String berechnePunktVorStrich(String aufgabe) {
-        String[] zeichen = aufgabe.split(" ");
+        String[] zeichen = splitAufgabe(aufgabe);
         String zwischenErgebnis = aufgabe;
         String operant = "";
-        String zahltext = "";
+        String zahl1 = "";
+        String zahl2 = "";
         for (int i = 1; i < zeichen.length; i = i + 2) {
-            operant = zeichen[i]; //zweites zeichen im ersten Schleifendurchlauf
-            zahltext = zeichen[i + 1]; //erstes zeichen im ersten Schleifendurchlauf
 
+            operant = zeichen[i];
 
-            float zahl = Float.parseFloat(zahltext);
-            if (Objects.equals(operant, "*")) {
-                zwischenErgebnis = mul(zwischenErgebnis, zahl);
+            if (Objects.equals(operant, "/") || Objects.equals(operant, "*")) {
+                zahl1 = zeichen[i - 1];
+                zahl2 = zeichen[i + 1];
+                String subaufgabe = zahl1 + " " + operant + " " + zahl2;
+                zwischenErgebnis = zwischenErgebnis.replace(subaufgabe,"" + berechneErgebnis(subaufgabe.split(" ")));
+                zeichen = splitAufgabe(zwischenErgebnis);
+                i = 1;
             }
-            if (Objects.equals(operant, "/")) {
-                zwischenErgebnis = div(zwischenErgebnis, zahl);
-            }
+
         }
-        return aufgabe;
+        return zwischenErgebnis;
+    }
+
+    private static String[] splitAufgabe(String aufgabe){
+        aufgabe = aufgabe.replace(" ", "");
+        return aufgabe.split("(?<=[()\\/*+-])(?=[0-9()])|(?<=[0-9()])(?=[()\\/*+-])");
     }
 
     private static void berechneUndZeigeErgebnis(String aufgabe) {
-        String[] zeichen = aufgabe.split(" ");
+        aufgabe = berechnePunktVorStrich(aufgabe);
+        String[] zeichen = splitAufgabe(aufgabe);
         //aufgabe = "5 + 2 * 3"
         //aufgabe = "5 + 6"
-        float endErgebnis = berechneErgebnis(zeichen);
-        System.out.println("Dein Ergebnis ist:" + endErgebnis);
+        try {
+            float endErgebnis = berechneErgebnis(zeichen);
+            System.out.println("Ihr Ergebnis ist:" + endErgebnis);
+        }
+        catch (Exception e){
+            System.out.println("ungültige Eingabe");
+        }
+
     }
 
-    private static float berechneErgebnis(String[] zeichen) {
-        float zwischenErgebnis = Float.parseFloat(zeichen[0]);
+    public static float berechneErgebnis(String[] zeichen) {
+        float zwischenErgebnis = 0;
+
+        zwischenErgebnis = Float.parseFloat(zeichen[0]);
+
         String operant = "";
         String zahltext = "";
         for (int i = 1; i < zeichen.length; i = i + 2) {
@@ -79,6 +100,12 @@ public class Main {
             }
             if (Objects.equals(operant, "-")) {
                 zwischenErgebnis = sub(zwischenErgebnis, zahl);
+            }
+            if (Objects.equals(operant, "*")) {
+                zwischenErgebnis = mul(zwischenErgebnis, zahl);
+            }
+            if (Objects.equals(operant, "/")) {
+                zwischenErgebnis = div(zwischenErgebnis, zahl);
             }
 
         }
